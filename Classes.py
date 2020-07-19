@@ -4,6 +4,7 @@ import sys
 import colorama
 import termcolor
 from PIL import ImageFilter
+from PIL import ImageFilter as IF
 
 
 
@@ -11,6 +12,20 @@ class Photo:
     def __init__(self, path):
         self.path = path
         self.image = Image.open(path)
+        self.available_filters = {
+                                "BLUR": IF.BLUR,
+                                "CONTOUR":IF.CONTOUR,
+                                "DETAIL":IF.DETAIL,
+                                "EDGE_ENHANCE":IF.EDGE_ENHANCE,
+                                "EDGE_ENHANCE_MORE":IF.EDGE_ENHANCE_MORE,
+                                "EMBOSS":IF.EMBOSS,
+                                "FIND_EDGES":IF.FIND_EDGES,
+                                "SHARPEN":IF.SHARPEN,
+                                "SMOOTH":IF.SMOOTH,
+                                "SMOOTH_MORE":IF.SMOOTH_MORE,
+                                "None":None
+                                }
+
 
     def rotate_image(self, angle):
         """Rotate image to some angle (in degrees)"""
@@ -44,6 +59,16 @@ class Photo:
     def save(self, file_name):
         """Save image to the same folder with filename"""
         self.image.save(file_name + ".jpeg")
+
+    def get_filter(self, filter_name):
+        """Returns PIL ImageFilter class using its name ('BLUR' -> ImageFilter.Blur)"""
+        try:
+            filter = self.available_filters[filter_name]
+            return filter
+        except KeyError as e:
+            return None
+
+
 
 
 class Folder:
